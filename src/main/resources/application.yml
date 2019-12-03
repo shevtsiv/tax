@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1;
+  mail:
+    host: smtp.tax.com
+    username: mock
+    password: mock
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create

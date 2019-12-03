@@ -1,0 +1,63 @@
+package me.shevtsiv.tax.service;
+
+import lombok.ToString;
+import me.shevtsiv.tax.persistance.PersonRepository;
+import me.shevtsiv.tax.persistance.TaxRepository;
+import me.shevtsiv.tax.persistance.entity.CarEntity;
+import me.shevtsiv.tax.persistance.entity.PersonEntity;
+import me.shevtsiv.tax.persistance.entity.PropertyEntity;
+import me.shevtsiv.tax.proto.PropertyTransferTransaction;
+import me.shevtsiv.tax.proto.Transaction;
+import me.shevtsiv.tax.proto.dto.Car;
+import org.springframework.stereotype.Service;
+
+@Service
+@ToString
+public class CarTax extends BaseTaxHandler implements TaxHandler {
+    private final double salePercent = 0.2;
+    private final double giftPercent = 0.1;
+    private final double cumulativePercent = 0.05;
+
+    public CarTax(PersonRepository personRepository, TaxRepository taxRepository) {
+        super(personRepository, taxRepository);
+    }
+
+    @Override
+    protected boolean isCapableToHandleTransaction(Transaction transaction) {
+        if (transaction instanceof PropertyTransferTransaction) {
+            PropertyTransferTransaction propertyTransferTransaction = ((PropertyTransferTransaction) transaction);
+            return propertyTransferTransaction.getProperty().getClass().equals(Car.class);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean handleTransaction(Transaction transaction) {
+        if (!isCapableToHandleTransaction(transaction)) {
+            return false;
+        }
+        PersonEntity personEntity = getPersonFromTransaction(transaction);
+        PropertyTransferTransaction transferTransaction = ((PropertyTransferTransaction) transaction);
+        Car car = (Car) transferTransaction.getProperty();
+        double taxToPay = 0;
+        if (transferTransaction.getType() == PropertyTransferTransaction.Type.SALE) {
+            taxToPay += car.getPrice() * salePercent;
+        } else if (transferTransaction.getType() == PropertyTransferTransaction.Type.GIFT) {
+            taxToPay += car.getPrice() * giftPercent;
+        }
+        for (PropertyEntity propertyEntity : personEntity.getPropertyEntity()) {
+            if (propertyEntity instanceof CarEntity) {
+                taxToPay += car.getPrice() * cumulativePercent;
+            }
+        }
+        personEntity.setMoney(personEntity.getMoney() - taxToPay);
+        personEntity.getPropertyEntity().add(new CarEntity(car.getPrice()));
+        personRepository.save(personEntity);
+        return true;
+    }
+
+    @Override
+    public double getTaxPercent() {
+        return salePercent;
+    }
+}
