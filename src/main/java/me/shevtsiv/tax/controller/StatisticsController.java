@@ -1,42 +1,26 @@
 package me.shevtsiv.tax.controller;
 
-import me.shevtsiv.tax.proto.Transaction;
 import me.shevtsiv.tax.service.TaxHandler;
 import me.shevtsiv.tax.service.TaxesPicker;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@org.springframework.web.bind.annotation.RestController
-@CrossOrigin("*")
-public class RestController {
-
-    private final List<TaxHandler> taxHandlers;
+@RestController
+public class StatisticsController {
     private final TaxesPicker taxesPicker;
+    private final List<TaxHandler> taxHandlers;
 
-    public RestController(List<TaxHandler> taxHandlers, TaxesPicker taxesPicker) {
-        this.taxHandlers = taxHandlers;
+    public StatisticsController(TaxesPicker taxesPicker, List<TaxHandler> taxHandlers) {
         this.taxesPicker = taxesPicker;
+        this.taxHandlers = taxHandlers;
     }
 
-    @PostMapping("handleTransaction/")
-    public HttpStatus handleTransaction(@RequestBody Transaction transaction) {
-        for (TaxHandler taxHandler : taxHandlers) {
-            if (taxHandler.handleTransaction(transaction)) {
-                return HttpStatus.OK;
-            }
-        }
-        return HttpStatus.NOT_IMPLEMENTED;
-    }
-
-    @GetMapping("getTaxesForPerson")
+    @GetMapping("getTaxesForPerson/")
     public List<String> getTaxesForPerson(@RequestParam String personName) {
         return taxesPicker.getSuitableTaxesForPerson(personName)
                 .stream()
@@ -45,7 +29,7 @@ public class RestController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("getPaidSumForPerson/{username}")
+    @GetMapping("getPaidSumForPerson/")
     public void getPaidSumForPerson(@RequestParam String username) {
 
     }
