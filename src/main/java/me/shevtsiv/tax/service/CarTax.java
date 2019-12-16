@@ -9,14 +9,9 @@ import me.shevtsiv.tax.persistance.entity.PropertyEntity;
 import me.shevtsiv.tax.proto.PropertyTransferTransaction;
 import me.shevtsiv.tax.proto.Transaction;
 import me.shevtsiv.tax.proto.dto.Car;
-import org.springframework.stereotype.Service;
 
-@Service
 @ToString
-public class CarTax extends BaseTaxHandler implements TaxHandler {
-    private final double salePercent = 0.2;
-    private final double giftPercent = 0.1;
-    private final double cumulativePercent = 0.05;
+public class CarTax extends PropertyTax {
 
     public CarTax(PersonRepository personRepository, TaxRepository taxRepository) {
         super(personRepository, taxRepository);
@@ -54,10 +49,5 @@ public class CarTax extends BaseTaxHandler implements TaxHandler {
         personEntity.getPropertyEntity().add(new CarEntity(car.getPrice()));
         personRepository.save(personEntity);
         return true;
-    }
-
-    @Override
-    public double getTaxPercent() {
-        return salePercent;
     }
 }

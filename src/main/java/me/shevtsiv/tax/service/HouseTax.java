@@ -8,14 +8,9 @@ import me.shevtsiv.tax.persistance.entity.PersonEntity;
 import me.shevtsiv.tax.proto.PropertyTransferTransaction;
 import me.shevtsiv.tax.proto.Transaction;
 import me.shevtsiv.tax.proto.dto.House;
-import org.springframework.stereotype.Service;
 
-@Service
 @ToString
-public class HouseTax extends BaseTaxHandler implements TaxHandler {
-    private final double salePercent = 0.2;
-    private final double giftPercent = 0.1;
-    private final double cumulativePercent = 0.05;
+public class HouseTax extends PropertyTax {
 
     public HouseTax(PersonRepository personRepository, TaxRepository taxRepository) {
         super(personRepository, taxRepository);
@@ -49,10 +44,5 @@ public class HouseTax extends BaseTaxHandler implements TaxHandler {
         personEntity.getPropertyEntity().add(new HouseEntity(house.getPrice(), house.getRoomsAmount()));
         personRepository.save(personEntity);
         return true;
-    }
-
-    @Override
-    public double getTaxPercent() {
-        return salePercent;
     }
 }
