@@ -8,11 +8,11 @@ import me.shevtsiv.tax.proto.PropertyTransferTransaction;
 import me.shevtsiv.tax.proto.Transaction;
 import me.shevtsiv.tax.proto.dto.House;
 
-@ToString
+@ToString(callSuper = true)
 public class HouseTax extends PropertyTax {
 
-    public HouseTax(PersonRepository personRepository) {
-        super(personRepository);
+    public HouseTax(PersonRepository personRepository, double salePercent, double giftPercent, double cumulativePercent) {
+        super(personRepository, salePercent, giftPercent, cumulativePercent);
     }
 
     @Override

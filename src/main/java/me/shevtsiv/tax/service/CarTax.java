@@ -9,11 +9,11 @@ import me.shevtsiv.tax.proto.PropertyTransferTransaction;
 import me.shevtsiv.tax.proto.Transaction;
 import me.shevtsiv.tax.proto.dto.Car;
 
-@ToString
+@ToString(callSuper = true)
 public class CarTax extends PropertyTax {
 
-    public CarTax(PersonRepository personRepository) {
-        super(personRepository);
+    public CarTax(PersonRepository personRepository, double salePercent, double giftPercent, double cumulativePercent) {
+        super(personRepository, salePercent, giftPercent, cumulativePercent);
     }
 
     @Override

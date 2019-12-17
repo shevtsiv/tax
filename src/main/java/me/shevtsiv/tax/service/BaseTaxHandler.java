@@ -6,9 +6,7 @@ import me.shevtsiv.tax.persistance.entity.PersonEntity;
 import me.shevtsiv.tax.proto.MonetaryTransaction;
 import me.shevtsiv.tax.proto.Transaction;
 import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Service;
 
-@Service
 @ToString
 public abstract class BaseTaxHandler {
     protected final PersonRepository personRepository;

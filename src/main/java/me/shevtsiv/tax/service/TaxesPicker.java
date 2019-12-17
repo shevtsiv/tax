@@ -17,13 +17,15 @@ public class TaxesPicker {
     private final CarTax carTax;
     private final HouseTax houseTax;
     private final LandTax landTax;
+    private final SocialPaymentTax socialPaymentTax;
     private final PersonRepository personRepository;
 
-    public TaxesPicker(SalaryTax salaryTax, CarTax carTax, HouseTax houseTax, LandTax landTax, PersonRepository personRepository) {
+    public TaxesPicker(SalaryTax salaryTax, CarTax carTax, HouseTax houseTax, LandTax landTax, SocialPaymentTax socialPaymentTax, PersonRepository personRepository) {
         this.salaryTax = salaryTax;
         this.carTax = carTax;
         this.houseTax = houseTax;
         this.landTax = landTax;
+        this.socialPaymentTax = socialPaymentTax;
         this.personRepository = personRepository;
     }
 
@@ -32,6 +34,8 @@ public class TaxesPicker {
             List<TaxHandler> result = new ArrayList<>();
             if (person.isEmployed()) {
                 result.add(salaryTax);
+            } else {
+                result.add(socialPaymentTax);
             }
             person.getPropertyEntity().forEach(propertyEntity -> {
                 if (propertyEntity instanceof CarEntity) {

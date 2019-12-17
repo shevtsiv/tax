@@ -5,15 +5,12 @@ import me.shevtsiv.tax.persistance.PersonRepository;
 import me.shevtsiv.tax.persistance.entity.PersonEntity;
 import me.shevtsiv.tax.proto.MonetaryTransaction;
 import me.shevtsiv.tax.proto.Transaction;
-import org.springframework.stereotype.Service;
 
-@Service
-@ToString
-public class SocialPaymentTax extends BaseTaxHandler implements TaxHandler {
-    private double basePercent = 0.01;
+@ToString(callSuper = true)
+public class SocialPaymentTax extends MonetaryTax implements TaxHandler {
 
-    public SocialPaymentTax(PersonRepository personRepository) {
-        super(personRepository);
+    public SocialPaymentTax(PersonRepository personRepository, double basePercent) {
+        super(personRepository, basePercent);
     }
 
     @Override
@@ -39,10 +36,5 @@ public class SocialPaymentTax extends BaseTaxHandler implements TaxHandler {
         }
         proceedTransactionWithSingleTax(transaction, personEntity, basePercent);
         return true;
-    }
-
-    @Override
-    public double getTaxPercent() {
-        return basePercent;
     }
 }

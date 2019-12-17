@@ -4,16 +4,12 @@ import lombok.ToString;
 import me.shevtsiv.tax.persistance.PersonRepository;
 import me.shevtsiv.tax.proto.MonetaryTransaction;
 import me.shevtsiv.tax.proto.Transaction;
-import org.springframework.stereotype.Service;
 
-@Service
-@ToString
-public class AbroadPaymentTax extends BaseTaxHandler implements TaxHandler {
+@ToString(callSuper = true)
+public class AbroadPaymentTax extends MonetaryTax implements TaxHandler {
 
-    private double basePercent = 0.3;
-
-    public AbroadPaymentTax(PersonRepository personRepository) {
-        super(personRepository);
+    public AbroadPaymentTax(PersonRepository personRepository, double basePercent) {
+        super(personRepository, basePercent);
     }
 
     @Override
@@ -35,10 +31,5 @@ public class AbroadPaymentTax extends BaseTaxHandler implements TaxHandler {
         }
         proceedTransactionWithSingleTax(transaction, basePercent);
         return true;
-    }
-
-    @Override
-    public double getTaxPercent() {
-        return basePercent;
     }
 }
