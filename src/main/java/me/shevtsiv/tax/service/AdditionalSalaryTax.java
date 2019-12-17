@@ -2,7 +2,6 @@ package me.shevtsiv.tax.service;
 
 import lombok.ToString;
 import me.shevtsiv.tax.persistance.PersonRepository;
-import me.shevtsiv.tax.persistance.TaxRepository;
 import me.shevtsiv.tax.proto.MonetaryTransaction;
 import me.shevtsiv.tax.proto.Transaction;
 import org.springframework.stereotype.Service;
@@ -13,8 +12,8 @@ public class AdditionalSalaryTax extends BaseTaxHandler implements TaxHandler {
 
     private final double basePercent = 0.01;
 
-    public AdditionalSalaryTax(PersonRepository personRepository, TaxRepository taxRepository) {
-        super(personRepository, taxRepository);
+    public AdditionalSalaryTax(PersonRepository personRepository) {
+        super(personRepository);
     }
 
     @Override

@@ -4,13 +4,11 @@ import me.shevtsiv.tax.persistance.PersonRepository;
 import me.shevtsiv.tax.persistance.entity.CarEntity;
 import me.shevtsiv.tax.persistance.entity.HouseEntity;
 import me.shevtsiv.tax.persistance.entity.LandEntity;
-import me.shevtsiv.tax.persistance.entity.PersonEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TaxesPicker {
@@ -30,10 +28,8 @@ public class TaxesPicker {
     }
 
     public List<TaxHandler> getSuitableTaxesForPerson(String personName) {
-        Optional<PersonEntity> personOptional = personRepository.findByName(personName);
-        if (personOptional.isPresent()) {
+        return personRepository.findByName(personName).map(person -> {
             List<TaxHandler> result = new ArrayList<>();
-            PersonEntity person = personOptional.get();
             if (person.isEmployed()) {
                 result.add(salaryTax);
             }
@@ -47,7 +43,6 @@ public class TaxesPicker {
                 }
             });
             return result;
-        }
-        return Collections.emptyList();
+        }).orElse(Collections.emptyList());
     }
 }

@@ -2,7 +2,6 @@ package me.shevtsiv.tax.service;
 
 import lombok.ToString;
 import me.shevtsiv.tax.persistance.PersonRepository;
-import me.shevtsiv.tax.persistance.TaxRepository;
 import me.shevtsiv.tax.persistance.entity.LandEntity;
 import me.shevtsiv.tax.persistance.entity.PersonEntity;
 import me.shevtsiv.tax.proto.PropertyTransferTransaction;
@@ -12,8 +11,8 @@ import me.shevtsiv.tax.proto.dto.Land;
 @ToString
 public class LandTax extends PropertyTax implements TaxHandler {
 
-    public LandTax(PersonRepository personRepository, TaxRepository taxRepository) {
-        super(personRepository, taxRepository);
+    public LandTax(PersonRepository personRepository) {
+        super(personRepository);
     }
 
     @Override

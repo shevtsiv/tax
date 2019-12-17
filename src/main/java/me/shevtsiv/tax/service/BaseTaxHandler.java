@@ -2,7 +2,6 @@ package me.shevtsiv.tax.service;
 
 import lombok.ToString;
 import me.shevtsiv.tax.persistance.PersonRepository;
-import me.shevtsiv.tax.persistance.TaxRepository;
 import me.shevtsiv.tax.persistance.entity.PersonEntity;
 import me.shevtsiv.tax.proto.MonetaryTransaction;
 import me.shevtsiv.tax.proto.Transaction;
@@ -13,11 +12,9 @@ import org.springframework.stereotype.Service;
 @ToString
 public abstract class BaseTaxHandler {
     protected final PersonRepository personRepository;
-    protected final TaxRepository taxRepository;
 
-    public BaseTaxHandler(PersonRepository personRepository, TaxRepository taxRepository) {
+    public BaseTaxHandler(PersonRepository personRepository) {
         this.personRepository = personRepository;
-        this.taxRepository = taxRepository;
     }
 
     protected abstract boolean isCapableToHandleTransaction(Transaction transaction);
